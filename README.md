@@ -16,7 +16,7 @@ Developed from insights gained through ethnographic studies with wildlife resear
 ## Demo
 Explore how ForestQB works through our interactive demo and a detailed walkthrough video:
 - **Demo Link:** [Try ForestQB here](https://forestqb.i3omar.com/)
-- **Demo Video:** [Watch the demo on YouTube](URL-to-YouTube-video)
+- **Demo Video:** [Watch the demo on YouTube](https://youtube.com/watch?v=0tyDlCxKMRk)
 
 ### Dataset
 To access the dataset used for developing and testing ForestQB, please visit the following link:
