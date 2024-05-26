@@ -18,6 +18,14 @@ Explore how ForestQB works through our interactive demo and a detailed walkthrou
 - **Demo Link:** [Try ForestQB here](https://forestqb.i3omar.com/)
 - **Demo Video:** [Watch the demo on YouTube](URL-to-YouTube-video)
 
+### Dataset
+To access the dataset used for developing and testing ForestQB, please visit the following link:
+- [ForestQB Dataset](https://github.com/i3omar/ForestRDF)
+
+### Rasa Model
+For more information about the conversational model used in ForestQB, visit the Rasa model page:
+- [ForestQB Rasa Model](https://github.com/i3omar/ForestBot)
+  
 ## Code Availability
 The source code for ForestQB will be available soon. Stay tuned for updates!
 
@@ -25,4 +33,4 @@ The source code for ForestQB will be available soon. Stay tuned for updates!
 To get started with ForestQB, visit our demo links above. Detailed documentation and setup instructions will be provided along with the source code release.
 
 ## Contact
-For more information or queries regarding ForestQB, please reach out to us at [contact@email.com].
+For more information or queries regarding ForestQB, please [contact us](https://orcid.org/0000-0001-8614-6550).
