@@ -24,7 +24,7 @@ To access the dataset used for developing and testing ForestQB, please visit the
 
 ### Rasa Model
 For more information about the conversational model used in ForestQB, visit the Rasa model page:
-- [ForestQB Rasa Model](https://github.com/i3omar/ForestBot)
+- [ForestBot - Rasa Model](https://github.com/i3omar/ForestBot)
   
 ## Code Availability
 The source code for ForestQB will be available soon. Stay tuned for updates!
