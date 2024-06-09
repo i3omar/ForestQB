@@ -1,6 +1,7 @@
 # ForestQB - Forest Query Builder
 
-[![Watch the video](https://i.ibb.co/xHjGZC6/video-image.png)](https://youtube.com/watch?v=0tyDlCxKMRk)
+[<img src="https://i.ibb.co/xHjGZC6/video-image.png" width="60%">](https://youtube.com/watch?v=0tyDlCxKMRk)
+
 
 ## Introduction
 ForestQB, or the Forest Query Builder, is a cutting-edge toolkit designed to enhance the exploration and application of observational Linked Data (LD) within the field of wildlife research and conservation. Aimed at non-experts, ForestQB simplifies the process of formulating queries from RDF triplestores by integrating a graphical user interface (GUI) with a conversational user interface (CUI). This makes observational LD accessible to users without expertise in RDF or SPARQL.
