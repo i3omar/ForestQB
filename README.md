@@ -1,6 +1,6 @@
 # ForestQB - Forest Query Builder
 
-[<img src="https://i.ibb.co/xHjGZC6/video-image.png" width="60%">](https://youtube.com/watch?v=0tyDlCxKMRk)
+[<img src="https://drive.google.com/uc?id=1G01R6SdQze5EkeYl9gqzCyIxNo73PQ7L" width="60%">](https://youtube.com/watch?v=0tyDlCxKMRk)
 
 
 ## Introduction
