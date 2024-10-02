@@ -8,6 +8,9 @@ ForestQB, or the Forest Query Builder, is a cutting-edge toolkit designed to enh
 
 Developed from insights gained through ethnographic studies with wildlife researchers, ForestQB improves accessibility to SPARQL endpoints and facilitates the exploration of observational LD, thereby playing a crucial role in wildlife conservation efforts.
 
+For more details, please refer to our published paper: [https://doi.org/10.1145/3675759](https://doi.org/10.1145/3675759).
+
+
 ## Key Features
 - **User-Friendly Interface:** Combines a GUI with a CUI to simplify the query building process.
 - **Accessibility:** Makes observational Linked Data accessible to non-experts.
