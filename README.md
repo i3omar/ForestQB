@@ -8,9 +8,10 @@ ForestQB, or the Forest Query Builder, is a cutting-edge toolkit designed to enh
 
 Developed from insights gained through ethnographic studies with wildlife researchers, ForestQB improves accessibility to SPARQL endpoints and facilitates the exploration of observational LD, thereby playing a crucial role in wildlife conservation efforts.
 
-For more details, please refer to our published paper: [https://doi.org/10.1145/3675759](https://doi.org/10.1145/3675759).
+1. For more details, please refer to our published paper: [https://doi.org/10.1145/3675759](https://doi.org/10.1145/3675759).
 
-
+2. For integration with LLMs, please check to our newly published paper: [https://doi.org/10.1007/978-981-96-0573-6_18](https://doi.org/10.1007/978-981-96-0573-6_18)
+  
 ## Key Features
 - **User-Friendly Interface:** Combines a GUI with a CUI to simplify the query building process.
 - **Accessibility:** Makes observational Linked Data accessible to non-experts.
@@ -36,5 +37,29 @@ The source code for ForestQB will be available soon. Stay tuned for updates!
 ## Getting Started
 To get started with ForestQB, visit our demo links above. Detailed documentation and setup instructions will be provided along with the source code release.
 
+## Citation
+
+If you use this code or dataset in your research, please cite our paper:
+
+```bibtex
+@article{10.1145/3675759,
+author = {Mussa, Omar and Rana, Omer and Goossens, Benoit and Orozco Ter wengel, Pablo and Perera, Charith},
+title = {ForestQB: Enhancing Linked Data Exploration through Graphical and Conversational UIs Integration},
+year = {2024},
+issue_date = {September 2024},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {2},
+number = {3},
+url = {https://doi.org/10.1145/3675759},
+doi = {10.1145/3675759},
+journal = {ACM J. Comput. Sustain. Soc.},
+month = sep,
+articleno = {32},
+numpages = {33},
+keywords = {Linked data, SPARQL, RDF, query builder, visual queryin}
+}
+
+```
 ## Contact
 For more information or queries regarding ForestQB, please [contact us](https://orcid.org/0000-0001-8614-6550).
