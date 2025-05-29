@@ -1,0 +1,22 @@
+{
+    "dateFilter": {
+        "predicate": "w:created",
+        "startDate": "\"2014-05-23T10:20:13+05:30\"^^xsd:dateTime",
+        "endDate": "\"2015-05-23T10:20:13+05:30\"^^xsd:dateTime",
+        "start": "May 10, 2021",
+        "end": "May 16, 2021"
+    },
+    "obseravble": [
+        {
+            "subject": "leo1",
+            "predicate": "?p2",
+            "object": "?o2"
+        }
+    ],
+    "leo1": {
+
+    }
+
+
+
+}

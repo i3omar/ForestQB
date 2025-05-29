@@ -1,0 +1,121 @@
+/**
+
+Matches:
+
+
+
+
+*/
+
+
+{
+    "dateFilter": {
+        "predicate": "w:created",
+        "startDate": "\"2014-05-23T10:20:13+05:30\"^^xsd:dateTime",
+        "endDate": "\"2015-05-23T10:20:13+05:30\"^^xsd:dateTime",
+        "start": "October 20, 2021",
+        "end": "November 18, 2021"
+    },
+    "observablesKeys": [
+        "http://schema.org/DGFC_ElephantLocObservedJasmin",
+        "http://schema.org/DGFC_ElephantLocObservedAqeela"
+    ],
+    "observables": [
+        {
+            "subject": "?s1",
+            "predicate": "http://schema.org/DGFC_ElephantLocObservedJasmin",
+            "object": "?o1"
+        },
+        {
+            "subject": "?s2",
+            "predicate": "http://schema.org/DGFC_ElephantLocObservedAqeela",
+            "object": "?o2"
+        }
+    ],
+    "filters": {
+        "http://schema.org/DGFC_ElephantLocObservedJasmin": {
+            "http://www.w3.org/2003/01/geo/wgs84_pos#alt": {
+                "isSelectable": true,
+                "predicateName": "?Altitude"
+            },
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": {
+                "isSelectable": true,
+                "predicateName": "?type"
+            },
+            "http://www.w3.org/2003/01/geo/wgs84_pos#lat": {
+                "isSelectable": true,
+                "predicateName": "?Latitude"
+            },
+            "http://www.w3.org/2003/01/geo/wgs84_pos#long": {
+                "isSelectable": true,
+                "predicateName": "?Longitude"
+            },
+            "http://www.w3.org/ns/sosa/Observation": {
+                "isSelectable": true,
+                "predicateName": "?Observation"
+            },
+            "http://www.w3.org/ns/sosa/ObservableProperty/Direction": {
+                "isSelectable": true,
+                "predicateName": "?Direction"
+            },
+            "http://www.w3.org/ns/sosa/ObservableProperty/Speed": {
+                "isSelectable": true,
+                "predicateName": "?Speed"
+            },
+            "http://www.w3.org/ns/sosa/ObservableProperty/Temperature": {
+                "isSelectable": true,
+                "predicateName": "?Temperature"
+            },
+            "http://www.w3.org/2006/time#gMTDate": {
+                "isSelectable": true,
+                "predicateName": "?gMTDate"
+            },
+            "http://www.w3.org/2006/time#gMTTime": {
+                "isSelectable": true,
+                "predicateName": "?gMTTime"
+            },
+            "http://www.w3.org/2006/time#localDate": {
+                "isSelectable": true,
+                "predicateName": "?localDate"
+            },
+            "http://www.w3.org/2006/time#localTime": {
+                "isSelectable": true,
+                "predicateName": "?localTime"
+            },
+            "http://www.w3.org/ns/sosa/ObservableProperty/Count": {
+                "isSelectable": true,
+                "predicateName": "?Count"
+            },
+            "http://www.w3.org/ns/sosa/ObservableProperty/Cov": {
+                "isSelectable": true,
+                "predicateName": "?Cov"
+            },
+            "http://www.w3.org/ns/sosa/ObservableProperty/Distance": {
+                "isSelectable": true,
+                "predicateName": "?Distance"
+            },
+            "http://www.w3.org/ns/sosa/ObservableProperty/HDOP": {
+                "isSelectable": true,
+                "predicateName": "?HDOP"
+            }
+        },
+        "http://schema.org/DGFC_ElephantLocObservedAqeela": {
+            "http://www.w3.org/ns/sosa/ObservableProperty/Temperature": {
+                "isSelectable": true,
+                "predicateName": "?Temperature"
+            }
+        }
+    },
+    "animals": [
+        {
+            "subject": "?s1",
+            "predicate": "http://schema.org/DGFC_ElephantLocObservedJasmin",
+            "object": "?o1"
+        },
+        {
+            "subject": "?s2",
+            "predicate": "http://schema.org/DGFC_ElephantLocObservedAqeela",
+            "object": "?o2"
+        }
+    ]
+}
