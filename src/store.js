@@ -85,8 +85,6 @@ const getDefaultState = () => {
       // rasaApiURL: "http://localhost:5005/webhooks/rest/webhook", //port default 5005
       rasaApiURL: "http://localhost:8081/forestBot/proxy",
 
-      collectionName: "rdf_ontology", //name of the collection, ignore this for version 1
-
       timeout: 60000,
       searchTriplePattern: {
         subject: "?s",
