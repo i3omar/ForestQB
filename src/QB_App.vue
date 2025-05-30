@@ -703,7 +703,7 @@ import MapFilter from "./components/MapFilterComponent";
 import Chatbot from "./components/ChatbotComponent";
 import EditableSPARQL from "./components/EditableSPARQL";
 
-import _ from "lodash"; // Utility library
+// import _ from "lodash"; // Utility library
 import axios from "axios"; // HTTP client for requests
 
 export default {
@@ -734,7 +734,7 @@ export default {
       // get the how many of elements were selected
       // if observables length changes, make sure sortByList will be updated.
       // important to sortByList to stay updated.
-      const temp = this.sortByList;
+      this.sortByList;
       return this.$store.state.coreStore.observables.length;
     },
     // Two-way binding for observables in Vuex
