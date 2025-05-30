@@ -720,7 +720,6 @@ export default {
       triplePatternObjectData: "", // Object for triple pattern
       selectedSearchTriplePatternData: "", // Selected pattern template
       showSearchCustomizationPanel: false, // Toggle for customization panel
-      buildingIndex: false, // Flag indicating if ontology index is being built
     };
   },
   computed: {
@@ -869,14 +868,6 @@ export default {
         return this.$store.state.settings.queryTemplate.sensors;
       },
     },
-    ontologyRdfTriple: {
-      set(value) {
-        this.$store.commit("setOntologyRdfTriple", value);
-      },
-      get() {
-        return this.$store.state.settings.ontologyRdfTriple;
-      },
-    },
     selectedSearchTriplePattern: {
       set(value) {
         this.$store.commit("setSelectedSearchTriplePatternTemplate", value);
@@ -959,11 +950,6 @@ export default {
     },
   },
   created() {
-    // Listen for custom events from other parts of the app (e.g., index build)
-    const thisComponent = this;
-    this.$root.$on("buildEmbeddingIndexEnd", function () {
-      thisComponent.buildingIndex = false;
-    });
   },
   methods: {
     // Function to download user selection data as a JSON file.
@@ -1078,13 +1064,6 @@ export default {
         " " +
         this.$refs.triplePatternObject.value +
         " }";
-    },
-    saveAndBuildOntology() {
-      this.ontologyRdfTriple = this.$refs.ontologyRdfTriple.value + "";
-      this.buildingIndex = true;
-
-      this.$root.$emit("buildEmbeddingIndex");
-
     },
     saveSettingsChanges() {
       this.settingsEndpointURL = this.$refs.settingsEndpointURL.value;

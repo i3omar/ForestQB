@@ -36,7 +36,6 @@ import _ from "lodash";
 import { examplesData, sosaExamplesData, mapAreasData, sosaMapAreasData } from "./examples.js";
 
 Vue.use(Vuex);
-const thisComponent = this;
 const getExamplesState = (key, ontology) => {
   if (ontology == "Forest Ontology") {
     return examplesData[key];
@@ -160,7 +159,7 @@ export default new Vuex.Store({
 
     axios(state, { method, url, data, params, timeout = 60000, cancelToken }) {
 
-      const token = localStorage.getItem('access_token');
+      // const token = localStorage.getItem('access_token');
       let axiosData = {
         method: method,
         url: url,
@@ -181,7 +180,7 @@ export default new Vuex.Store({
         });
       });
     },
-    async determineEndpointOntology({ dispatch, state, commit, context }, { uri }) {
+    async determineEndpointOntology({ dispatch, state, commit}, { uri }) {
 
       const keys = Object.keys(state.settings.searchTriplePatternTemplate);
 
