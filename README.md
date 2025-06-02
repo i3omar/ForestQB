@@ -24,15 +24,6 @@ Explore how ForestQB works through our interactive demo and a detailed walkthrou
 - **Demo Video:** [Watch the demo on YouTube](https://youtube.com/watch?v=0tyDlCxKMRk)
 
 ### LLM Integration Demo
-This video will take you through the integration proccess, how to do the RDF embeddings and how to use the LLM to answer complex queries: [ForestQB: LLM Integration
-](https://www.youtube.com/watch?v=SzzjMmkY1Og) which contain:
-- [0:13](https://www.youtube.com/watch?v=SzzjMmkY1Og&t=13s) RDF Embedding Generation
-- [2:14](https://www.youtube.com/watch?v=SzzjMmkY1Og&t=134s) Complex Queries Without LLM Integration
-- [3:42](https://www.youtube.com/watch?v=SzzjMmkY1Og&t=222s) Complex Queries Using LLM Integration
-
-
-
-### LLM Integration Demo
 This demo shows how to integrate Large Language Models (LLMs) for advanced query capabilities using ForestQB. The video [ForestQB: LLM Integration](https://www.youtube.com/watch?v=SzzjMmkY1Og) covers:
 
 * [0:13](https://www.youtube.com/watch?v=SzzjMmkY1Og&t=13s) **Generating RDF Embeddings:** Step-by-step guide on creating RDF embeddings for your data.
