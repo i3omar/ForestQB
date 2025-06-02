@@ -1,0 +1,79 @@
+{
+  "name": "ForestQB_App_v2",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "botui": "^0.3.9",
+    "core-js": "^3.6.5",
+    "datatables.net": "^1.13.11",
+    "datatables.net-dt": "^1.13.11",
+    "date-fns": "^4.1.0",
+    "decamelize": "^6.0.0",
+    "jquery": "^3.7.1",
+    "leaflet": "^1.7.1",
+    "leaflet-draw": "^1.0.4",
+    "select2": "^4.1.0-rc.0",
+    "vue": "^2.6.11",
+    "vue-contenteditable-input": "^0.1.4",
+    "vue-multiselect": "^2.1.6",
+    "vue-quick-chat": "^1.2.8",
+    "vue-select": "^3.16.0",
+    "vue-socket.io": "^3.0.10",
+    "vue2-datepicker": "^3.10.4",
+    "vue2-leaflet": "^2.7.1",
+    "vue2-leaflet-fullscreen": "^1.0.1",
+    "vuetify": "^2.6.4",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.19",
+    "@vue/cli-plugin-eslint": "~4.5.19",
+    "@vue/cli-service": "~4.5.19",
+    "axios": "^1.5.0",
+    "babel-eslint": "^10.1.0",
+    "deepmerge": "^4.2.2",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "lodash": "^4.17.21",
+    "popper.js": "^1.16.1",
+    "postcss": "^8.4.21",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "~1.32",
+    "sass-loader": "^10.1.1",
+    "vue-loader": "^15.10.1",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "globals": {
+      "$": "readonly",
+      "jQuery": "readonly"
+    },
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-unused-vars": "warn",
+      "vue/no-unused-vars": "warn"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
