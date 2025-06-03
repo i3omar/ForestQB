@@ -32,7 +32,7 @@ To access the dataset used for developing and testing ForestQB, please visit the
 
 ### Rasa Model
 For more information about the conversational model used in ForestQB, visit the Rasa model page:
-- [ForestBot - Rasa Model](https://github.com/i3omar/ForestBot)
+- [ForestBot (Version 1) - Rasa Model](https://github.com/i3omar/ForestBot/tree/v1)
 
 ## Getting Started
 ### Prerequisite: API Setup
