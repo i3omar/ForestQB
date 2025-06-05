@@ -4084,31 +4084,43 @@ export default {
     },
   },
   created: function () {
-    // Storing a reference to the current component instance to maintain context in callback functions
-    const thisComponent = this;
+  // Store reference to current Vue component instance for use in callbacks
+  const thisComponent = this;
 
-    // Register an event listener on the root Vue instance for the "buildEmbeddingIndex" event
-    this.$root.$on("buildEmbeddingIndex", async function () {
-      // Retrieve RDF triple data from the Vuex store
-      const tripleData = thisComponent.$store.state.settings.ontologyRdfTriple;
-      // Call the buildIndex method of rdfPrompt to rebuild the index with new triple data
-      rdfPrompt.buildIndex(tripleData);// rebuild the index;
+  // Register an event listener for the "buildEmbeddingIndex" event on the root Vue instance
+  this.$root.$on("buildEmbeddingIndex", async function () {
+    // Retrieve RDF triple data from Vuex store state
+    const tripleData = thisComponent.$store.state.settings.ontologyRdfTriple;
 
-      // Uncomment to log the RDF triples being indexed
-      // console.log("we start indexing",rdfPrompt.getRdfTriples());
+    // Build or rebuild the in-memory RDF index using the retrieved triples
+    rdfPrompt.buildIndex(tripleData);
 
-      // Perform an asynchronous HTTP POST request to the indexing server
-      let data = (
-        await axios.post(thisComponent.$store.state.settings.indexingServerURL, {
-          collectionName: thisComponent.$store.state.settings.collectionName,
-          rdfTriples: rdfPrompt.getRdfTriples(), // RDF triples to be indexed
-        })
-      ).data;
+    try {
+      // Make an asynchronous HTTP POST request to the indexing server,
+      // sending the collection name and RDF triples for indexing
+      let response = await axios.post(
+        thisComponent.$store.state.settings.indexingServerURL, // The server URL from settings
+        {
+          collectionName: thisComponent.$store.state.settings.collectionName, // The name of the collection to update/create
+          rdfTriples: rdfPrompt.getRdfTriples(), // Get triples from rdfPrompt instance
+        }
+      );
 
-      // Emit an event from the root Vue instance signaling the end of the indexing process
+      // If the request succeeds, show a browser alert indicating success
+      alert("Index was successfully created.");
+    } catch (error) {
+      // If an error occurs during the HTTP request, show an alert with the error message
+      // It tries to get a server-provided error message, falling back to generic error if not present
+      alert(
+        "Failed to create index: " +
+          (error?.response?.data?.message || error.message)
+      );
+    } finally {
+      // Regardless of success or failure, always emit an event signaling the end of the process
       thisComponent.$root.$emit("buildEmbeddingIndexEnd");
-    });
-  },
+    }
+  });
+},
   // The mounted() lifecycle hook runs after the component has been mounted to the DOM.
   mounted() {
     // Storing a reference to the current component instance for use in nested functions
