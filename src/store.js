@@ -100,8 +100,10 @@ const getDefaultState = () => {
       rasaApiURL: "http://localhost:8081/forestBot/proxy", // RASA Chatbot API endpoint (proxy)
 
 
-      indexingServerURL: "./api/forestBot/llm/collection/build", // LLM vector indexing server
-      similaritySearchURL: "./api/forestBot/llm/collection/search", // LLM semantic search endpoint
+      llmApiURL: "http://localhost:8081/forestBot/llm/proxy", // LLM proxy URL
+      modelName: "gpt-3.5-turbo", //The LLM Name
+      indexingServerURL: "http://localhost:8081/forestBot/llm/collection/build", // LLM vector indexing server
+      similaritySearchURL: "http://localhost:8081/forestBot/llm/collection/search", // LLM semantic search endpoint
 
       collectionName: "rdf_ontology", //Name of the collection for the vector server
       llm: true, // Enable LLM support - this can be changed from UI settings.

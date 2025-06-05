@@ -1,32 +1,16 @@
 <template>
   <div class="botui botui-container" v-botui-container>
     <div class="botui-messages-container">
-      <div
-        v-for="msg in messages"
-        class="botui-message"
-        :class="[{ human: msg.human, bot: !msg.human }, msg.cssClass]"
-        v-botui-scroll
-      >
+      <div v-for="msg in messages" :key="msg.id" class="botui-message"
+        :class="[{ human: msg.human, bot: !msg.human }, msg.cssClass]" v-botui-scroll>
         <transition name="slide-fade">
-          <div
-            v-if="msg.visible"
-            :class="[
-              { human: msg.human, 'botui-message-content': true },
-              msg.type,
-            ]"
-          >
-            <span
-              v-if="msg.type == 'text'"
-              v-text="msg.content"
-              v-botui-markdown
-            ></span>
-            <iframe
-              v-if="msg.type == 'embed'"
-              :src="msg.content"
-              frameborder="0"
-              allowfullscreen
-              scrolling="no"
-            ></iframe>
+          <div v-if="msg.visible" :class="[
+            { human: msg.human, 'botui-message-content': true },
+            msg.type,
+          ]">
+            <span v-if="msg.type == 'text'" v-text="msg.content" v-botui-markdown></span>
+            <iframe v-if="msg.type == 'embed'" :src="msg.content" frameborder="0" allowfullscreen
+              scrolling="no"></iframe>
           </div>
         </transition>
         <div v-if="msg.loading" class="botui-message-content loading">
@@ -39,196 +23,91 @@
     <div class="botui-actions-container">
       <transition name="slide-fade">
         <div v-if="action.show" v-botui-scroll>
-          <form
-            v-if="action.type == 'text'"
-            class="botui-actions-text"
-            @submit.prevent="handle_action_text()"
-            :class="action.cssClass"
-          >
-            <i
-              v-if="action.text.icon"
-              class="botui-icon botui-action-text-icon fa"
-              :class="'fa-' + action.text.icon"
-            ></i>
-            <input
-              ref="input"
-              :type="action.text.sub_type"
-              accept="image/*"
-              capture="camera"
-              v-model="action.text.value"
-              class="botui-actions-text-input"
-              :placeholder="action.text.placeholder"
-              :size="action.text.size"
-              :class="action.text.cssClass"
-              required
-              v-focus
-            />
-            <button
-              type="submit"
-              :class="{
-                'botui-actions-buttons-button': !!action.text.button,
-                'botui-actions-text-submit': !action.text.button,
-              }"
-            >
-              <i
-                v-if="action.text.button && action.text.button.icon"
-                class="botui-icon botui-action-button-icon fa"
-                :class="'fa-' + action.text.button.icon"
-              ></i>
+          <form v-if="action.type == 'text'" class="botui-actions-text" @submit.prevent="handle_action_text()"
+            :class="action.cssClass">
+            <i v-if="action.text.icon" class="botui-icon botui-action-text-icon fa"
+              :class="'fa-' + action.text.icon"></i>
+            <input ref="input" :type="action.text.sub_type" accept="image/*" capture="camera"
+              v-model="action.text.value" class="botui-actions-text-input" :placeholder="action.text.placeholder"
+              :size="action.text.size" :class="action.text.cssClass" required v-focus />
+            <button type="submit" :class="{
+              'botui-actions-buttons-button': !!action.text.button,
+              'botui-actions-text-submit': !action.text.button,
+            }">
+              <i v-if="action.text.button && action.text.button.icon" class="botui-icon botui-action-button-icon fa"
+                :class="'fa-' + action.text.button.icon"></i>
               <span>{{
                 (action.text.button && action.text.button.label) || "Go"
               }}</span>
             </button>
           </form>
-          <form
-            v-if="action.type == 'select'"
-            class="botui-actions-select"
-            @submit.prevent="handle_action_select()"
-            :class="action.cssClass"
-          >
-            <i
-              v-if="action.select.icon"
-              class="botui-icon botui-action-select-icon fa"
-              :class="'fa-' + action.select.icon"
-            >
+          <form v-if="action.type == 'select'" class="botui-actions-select" @submit.prevent="handle_action_select()"
+            :class="action.cssClass">
+            <i v-if="action.select.icon" class="botui-icon botui-action-select-icon fa"
+              :class="'fa-' + action.select.icon">
             </i>
-            <v-select
-              v-if="action.select.searchselect && !action.select.multipleselect"
-              v-model="action.select.value"
-              :value="action.select.value"
-              :placeholder="action.select.placeholder"
-              class="botui-actions-text-searchselect"
-              :label="action.select.label"
-              :options="action.select.options"
-            ></v-select>
-            <v-select
-              v-else-if="
-                action.select.searchselect && action.select.multipleselect
-              "
-              multiple
-              v-model="action.select.value"
-              :value="action.select.value"
-              :placeholder="action.select.placeholder"
-              class="botui-actions-text-searchselect"
-              :label="action.select.label"
-              :options="action.select.options"
-            ></v-select>
-            <select
-              v-else
-              v-model="action.select.value"
-              class="botui-actions-text-select"
-              :placeholder="action.select.placeholder"
-              :size="action.select.size"
-              :class="action.select.cssClass"
-              required
-              v-focus
-            >
-              <option
-                v-for="option in action.select.options"
-                :class="action.select.optionClass"
-                v-bind:value="option.value"
-                :disabled="option.value == '' ? true : false"
-                :selected="
-                  action.select.value == option.value ? 'selected' : ''
-                "
-              >
+            <v-select v-if="action.select.searchselect && !action.select.multipleselect" v-model="action.select.value"
+              :value="action.select.value" :placeholder="action.select.placeholder"
+              class="botui-actions-text-searchselect" :label="action.select.label"
+              :options="action.select.options"></v-select>
+            <v-select v-else-if="
+              action.select.searchselect && action.select.multipleselect
+            " multiple v-model="action.select.value" :value="action.select.value"
+              :placeholder="action.select.placeholder" class="botui-actions-text-searchselect"
+              :label="action.select.label" :options="action.select.options"></v-select>
+            <select v-else v-model="action.select.value" class="botui-actions-text-select"
+              :placeholder="action.select.placeholder" :size="action.select.size" :class="action.select.cssClass"
+              required v-focus>
+              <option v-for="option in action.select.options" :class="action.select.optionClass" :key="option.value"
+                v-bind:value="option.value" :disabled="option.value == '' ? true : false" :selected="action.select.value == option.value ? 'selected' : ''
+                  ">
                 {{ option.text }}
               </option>
             </select>
-            <button
-              type="submit"
-              :class="{
-                'botui-actions-buttons-button': !!action.select.button,
-                'botui-actions-select-submit': !action.select.button,
-              }"
-            >
-              <i
-                v-if="action.select.button && action.select.button.icon"
-                class="botui-icon botui-action-button-icon fa"
-                :class="'fa-' + action.select.button.icon"
-              ></i>
+            <button type="submit" :class="{
+              'botui-actions-buttons-button': !!action.select.button,
+              'botui-actions-select-submit': !action.select.button,
+            }">
+              <i v-if="action.select.button && action.select.button.icon" class="botui-icon botui-action-button-icon fa"
+                :class="'fa-' + action.select.button.icon"></i>
               <span>{{
                 (action.select.button && action.select.button.label) || "Ok"
               }}</span>
             </button>
           </form>
-          <div
-            v-if="action.type == 'button'"
-            class="botui-actions-buttons"
-            :class="action.cssClass"
-          >
-            <button
-              type="button"
-              :class="[
-                button.icon ? 'botui-actions-buttons-button-icon' : '',
-                button.cssClass,
-              ]"
-              class="botui-actions-buttons-button"
-              v-for="button in action.button.buttons"
-              @click="handle_action_button(button)"
-              autofocus
-            >
-              <i
-                v-if="button.icon"
-                class="botui-icon botui-action-button-icon fa"
-                :class="'fa-' + button.icon"
-                :style="'background-image:url(' + button.icon + ')'"
-              ></i>
+          <div v-if="action.type == 'button'" class="botui-actions-buttons" :class="action.cssClass">
+            <button type="button" :class="[
+              button.icon ? 'botui-actions-buttons-button-icon' : '',
+              button.cssClass,
+            ]" class="botui-actions-buttons-button" v-for="(button, idx) in action.button.buttons" :key="idx"
+              @click="handle_action_button(button)" autofocus>
+              <i v-if="button.icon" class="botui-icon botui-action-button-icon fa" :class="'fa-' + button.icon"
+                :style="'background-image:url(' + button.icon + ')'"></i>
               {{ button.text }}
             </button>
           </div>
-          <form
-            v-if="action.type == 'buttontext'"
-            class="botui-actions-text"
-            @submit.prevent="handle_action_text()"
-            :class="action.cssClass"
-          >
-            <i
-              v-if="action.text.icon"
-              class="botui-icon botui-action-text-icon fa"
-              :class="'fa-' + action.text.icon"
-            ></i>
-            <input
-              ref="input"
-              :type="action.text.sub_type"
-              v-model="action.text.value"
-              class="botui-actions-text-input"
-              :placeholder="action.text.placeholder"
-              :size="action.text.size"
-              :class="action.text.cssClass"
-              required
-              v-focus
-            />
-            <button
-              type="submit"
-              :class="{
-                'botui-actions-buttons-button': !!action.text.button,
-                'botui-actions-text-submit': !action.text.button,
-              }"
-            >
-              <i
-                v-if="action.text.button && action.text.button.icon"
-                class="botui-icon botui-action-button-icon fa"
-                :class="'fa-' + action.text.button.icon"
-              ></i>
+          <form v-if="action.type == 'buttontext'" class="botui-actions-text" @submit.prevent="handle_action_text()"
+            :class="action.cssClass">
+            <i v-if="action.text.icon" class="botui-icon botui-action-text-icon fa"
+              :class="'fa-' + action.text.icon"></i>
+            <input ref="input" :type="action.text.sub_type" v-model="action.text.value" class="botui-actions-text-input"
+              :placeholder="action.text.placeholder" :size="action.text.size" :class="action.text.cssClass" required
+              v-focus />
+            <button type="submit" :class="{
+              'botui-actions-buttons-button': !!action.text.button,
+              'botui-actions-text-submit': !action.text.button,
+            }">
+              <i v-if="action.text.button && action.text.button.icon" class="botui-icon botui-action-button-icon fa"
+                :class="'fa-' + action.text.button.icon"></i>
               <span>{{
                 (action.text.button && action.text.button.label) || "Go"
               }}</span>
             </button>
             <div class="botui-actions-buttons" :class="action.cssClass">
-              <button
-                type="button"
-                :class="button.cssClass"
-                class="botui-actions-buttons-button"
-                v-for="button in action.button.buttons"
-                @click="handle_action_button(button)"
-                autofocus
-              >
-                <i
-                  v-if="button.icon"
-                  class="botui-icon botui-action-button-icon fa"
-                  :class="'fa-' + button.icon"
-                ></i>
+              <button type="button" :class="button.cssClass" class="botui-actions-buttons-button"
+                v-for="(button, idx) in action.button.buttons" :key="idx" @click="handle_action_button(button)"
+                autofocus>
+                <i v-if="button.icon" class="botui-icon botui-action-button-icon fa" :class="'fa-' + button.icon"></i>
                 {{ button.text }}
               </button>
             </div>
@@ -316,13 +195,14 @@ function _handleAction(text) {
   _instance.action.show = !_instance.action.autoHide;
 }
 
-import { Vuetify, VSelect } from "vuetify";
-import axios from "axios";
+// import { Vuetify, VSelect } from "vuetify";
+import { VSelect } from "vuetify";
+// import axios from "axios";
 
 export default {
   name: "BotUi",
   components: {
-    Vuetify,
+    // Vuetify,
     VSelect,
   },
   data: function () {
@@ -343,7 +223,8 @@ export default {
   },
   computed: {
     isMobile: function () {
-      return root.innerWidth && root.innerWidth <= 768;
+      // return root.innerWidth && root.innerWidth <= 768;
+      return window.innerWidth && window.innerWidth <= 768;
     },
   },
   methods: {
@@ -356,7 +237,7 @@ export default {
       };
 
       for (var eachProperty in button) {
-        if (button.hasOwnProperty(eachProperty)) {
+        if (Object.prototype.hasOwnProperty.call(button, eachProperty)) {
           if (
             eachProperty !== "type" &&
             eachProperty !== "text" &&
@@ -467,6 +348,13 @@ function _addMessage(_msg) {
 
   _msg.type = _msg.type || "text";
   _msg.visible = _msg.delay || _msg.loading ? false : true;
+
+  // 💡 Ensure a unique ID for each message
+  if (!_msg.id) {
+    // Use a timestamp + random number for uniqueness
+    _msg.id = 'msg_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
+  }
+
   var _index = _instance.messages.push(_msg) - 1;
 
   //logging
@@ -475,9 +363,9 @@ function _addMessage(_msg) {
     if (_msg["human"]) {
       sender = "User";
     }
-    axios.post("./api/chatlog", {
-      log: sender + ": " + JSON.stringify(_msg.content),
-    });
+    // axios.post("./api/chatlog", {
+    //   log: sender + ": " + JSON.stringify(_msg.content),
+    // });
   }
 
   return new Promise(function (resolve) {
@@ -528,9 +416,9 @@ _interface.message = {
     var _msg = _instance.messages[index];
     _msg.content = msg.content;
     //log update
-    axios.post("./api/chatlog", {
-      log: "Bot (Update): " + JSON.stringify(_msg.content),
-    });
+    // axios.post("./api/chatlog", {
+    //   log: "Bot (Update): " + JSON.stringify(_msg.content),
+    // });
     //
     _msg.visible = !msg.loading;
     _msg.loading = !!msg.loading;
@@ -544,7 +432,8 @@ _interface.message = {
 
 function mergeAtoB(objA, objB) {
   for (var prop in objA) {
-    if (!objB.hasOwnProperty(prop)) {
+    // if (!objB.hasOwnProperty(prop)) {
+    if (!Object.prototype.hasOwnProperty.call(objB, prop)) {
       objB[prop] = objA[prop];
     }
   }
@@ -752,6 +641,7 @@ button.botui-actions-buttons-button {
 button.botui-actions-buttons-button {
   margin-top: 10px;
   margin-bottom: 10px;
+
   &:not(:last-child) {
     margin-right: 10px;
   }

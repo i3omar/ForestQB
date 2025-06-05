@@ -149,6 +149,8 @@ Vue.mixin({
             //     }
             // }
 
+            predicate = predicate.trim().replace(/^<+|>+$/g, '');
+
             //If Name dont exist in the list, I will try to guess it myself:
             let str = predicate;
 

@@ -306,6 +306,22 @@ export default {
     },
   },
   methods: {
+    async queryLLM(promptText) {
+      // Get the LLM API URL from the Vuex store's settings
+      const llmApiURL = this.$store.state.settings.llmApiURL;
+      try {
+        // Send a POST request to the LLM API with the prompt text as the request body
+        const response = await axios.post(llmApiURL, promptText);
+
+        // Return only the data part of the response (usually the useful result)
+        return response.data;
+      } catch (error) {
+        if (error.code === 'ECONNABORTED' || error.message.includes('Network Error')) {
+          throw new Error('Network error: Unable to connect to LLM API.');
+        }
+        throw error; // Re-throw other errors
+      }
+    },
     deleteInputWithKey(key) {
       this.$delete(this.extractorWizardModalInput, key);
     },
@@ -1116,7 +1132,7 @@ export default {
 
       // Step 3: Configure LLM query setup
       const llmSetup = {
-        model: "gpt-3.5-turbo",
+        model: this.$store.state.settings.modelName, // model: "gpt-3.5-turbo",
         temperature: 0,
         fewShotData: [  /* ... few-shot examples ... */
           { "user": "what is the ability to move of the animals" },
@@ -1192,7 +1208,7 @@ export default {
   }
 }` },
 
-// Aggregate function example:
+          // Aggregate function example:
           { "user": "I want you to find all readings from Sandi, Kasih, and Puteri during 2022, where the speeds of Kasih and Puteri are above 160, and show me the average temperature of Sandi" },
           {
             "assistant": `{
@@ -1251,11 +1267,35 @@ export default {
       console.log("[LLM-EntityExtractor] Step 4 - Prompt generated for LLM:", promptText);
 
       // Step 5: Query the language model via API
-      const llmResponse = (
-        await axios.post("./api/forestBot/llm/proxy", promptText)
-      ).data;
+      // const llmResponse = (
+      //   await axios.post(thisComponent.$store.state.settings.llmApiURL, promptText)
+      // ).data;
 
-      const llmContent = llmResponse["choices"][0]["message"]["content"];
+      // Step 5: Query the language model via API
+      // const llmResponse = await this.queryLLM(promptText);
+      // const llmContent = llmResponse["choices"][0]["message"]["content"];
+      let llmContent = null;
+
+      try {
+        const llmResponse = await this.queryLLM(promptText);
+
+        if (
+          llmResponse &&
+          llmResponse.choices &&
+          Array.isArray(llmResponse.choices) &&
+          llmResponse.choices[0] &&
+          llmResponse.choices[0].message &&
+          typeof llmResponse.choices[0].message.content === 'string'
+        ) {
+          llmContent = llmResponse.choices[0].message.content;
+        } else {
+          // Throw error for unexpected response
+          throw new Error("Unexpected response from language model API.");
+        }
+      } catch (error) {
+        // You can add more details to the error message if you want
+        throw new Error("Failed to get response from language model API: " + error.message);
+      }
       console.log("[LLM-EntityExtractor] Step 5 - Raw LLM response:", llmContent);
 
 
@@ -1266,6 +1306,8 @@ export default {
       const firstKey = Object.keys(jsonContent[0])[0];
 
       const firstLevelKeys = Object.keys(jsonContent[0][firstKey]);
+
+      console.log("firstLevelKeys", firstLevelKeys);
 
       console.log("jsonContent", jsonContent);
       let foundObservables = { sensors: {}, observableProperties: {} };
@@ -1279,7 +1321,7 @@ export default {
           let server_response = undefined;
 
           // console.log("**** 1. ", firstLevelKeys);
-          console.log(`[LLM-EntityExtractor] Step 7.1 - Processing entity: '${entityName}'`);
+          console.log(`[LLM-EntityExtractor] Step 7.1 - observable: '${observable}' - Processing entity: '${entityName}'`);
 
 
           // Query server for URI information about the entity
@@ -1517,7 +1559,7 @@ export default {
 
       // Set up the parameters for the language model (LLM) call.
       const llmSetup = {
-        model: "gpt-3.5-turbo",
+        model: this.$store.state.settings.modelName, // model: "gpt-3.5-turbo",
         temperature: 0,
         fewShotData: [],
         delimiter: "####",
@@ -1533,9 +1575,11 @@ export default {
 
       // Query the LLM service and capture the response.
       try {
-        const llmResponse = (
-          await axios.post("./api/forestBot/llm/proxy", promptText)
-        ).data;
+        // const llmResponse = (
+        //   await axios.post(this.$store.state.settings.llmApiURL, promptText)
+        // ).data;
+
+        const llmResponse = await this.queryLLM(promptText);
 
         // Extract the main content from the LLM response.
         // const llmContent = llmResponse["choices"][0]["message"]["content"];
@@ -1554,14 +1598,36 @@ export default {
     processBotCustomResponses: async function (userMsg, response) {
       const delay = (ms) => new Promise((res) => setTimeout(res, ms));
       // console.log("useLLM", this.useLLM)
-      const threshold = (this.useLLM ? 0.7 : 0.7); // 2 : 0.7
+      const threshold = (this.useLLM ? 0.6 : 0.6); // 2 : 0.7
       const thisComponent = this; //make sure this really means this.
       let exEnt; //extracted entities;
       let intentName = response["custom"]["latest_message"]["intent"]["name"];
+      let botResponses = [];    // array of bot responses
       // const userMsg = text; //response["custom"]["latest_message"]["text"];
 
+      // let server_response;      // server response from axios
+      // let head;                 // header/column names from server response
+      // let results;              // results array from server response
+      // let botResponses = [];    // array of bot responses
+      // // let listItems;            // used for <ul><li> list output
+      // let options;              // used for dropdown/select options
+      // let observable;           // current observable string value
+      // let featureOfInterestList; // used for info about observables
+      // let data;                 // for axios result in 'list_observable_info'
+      // let foundObservables = []; // for construct_where_query/when_query
+      // let foundObservablesNames = []; // for constructing summary of observables
+      // let searchParameters = []; // for search param summary in construct_where/when
+      // let llmObservables;        // output from LlmEntityExtractor
+      // let iPickedMyOwnDate = false; // flag for date picker in construct_where/when
+      // let iPickedMyOwnArea = false; // flag for area picker in construct_where/when
+      // let addToExistingSensors = false; // flag for construct_where/when
+      // let noLimit = false;      // limit check flag
+      // let noSort = false;       // sort check flag
+      // let filters;              // for filter summary
+      // let searchParametersLi = ""; // for summary list
+      // let observableURI;        // for observable info
 
-      let botResponses = [];
+      // let botResponses = [];
       console.log(response["custom"]["latest_message"]["intent"]["name"]);
 
       const intentDict = {
@@ -1618,7 +1684,7 @@ export default {
       console.log("intentName", intentName);
 
       switch (intentName) {
-        case "nlu_fallback": //------ less than threshold
+        case "nlu_fallback": {//------ less than threshold
 
           if (this.useLLM) {
             botResponses = this.handleByLlmResponses(
@@ -1673,9 +1739,8 @@ export default {
 
           } //LLM not enabled --- end
           break;
-
-
-        case "show_examples":
+        }
+        case "show_examples": {
           const examplesOptions = [
             {
               text: "List available sensors",
@@ -1726,8 +1791,8 @@ export default {
             },
           });
           break;
-
-        case "discover_sensors_within_location": //----------------------------------------------
+        }
+        case "discover_sensors_within_location": {//----------------------------------------------
           exEnt = this.extractEntities({
             entitiesArray: response["custom"]["latest_message"]["entities"],
           });
@@ -1969,9 +2034,9 @@ export default {
 
           break; // ------- end of discover_sensors_within_location -----------------------------
 
-
+        }
         case "count_all_sensors":
-        case "list_all_sensors":
+        case "list_all_sensors": {
           let server_response = undefined;
 
           await this.$store
@@ -2080,9 +2145,9 @@ export default {
           });
 
           break;
-
-        case "list_observable_info":
-          server_response = undefined;
+        }
+        case "list_observable_info": {
+          let server_response = undefined;
           if (
             !response["custom"]["latest_message"]["entities"] ||
             !response["custom"]["latest_message"]["entities"][0] ||
@@ -2130,14 +2195,14 @@ export default {
             throw new Error("No observable data!");
           }
 
-          head = server_response.data["head"]["vars"];
-          results = server_response.data["results"]["bindings"];
+          let head = server_response.data["head"]["vars"];
+          let results = server_response.data["results"]["bindings"];
 
           console.log("results.length", results[0]);
 
           if (
-            results.length == 0 ||
-            (results.length > 0 && _.isEmpty(results[0]))
+            // results.length == 0 ||(results.length > 0 && _.isEmpty(results[0]))
+            results.length == 0 || (results.length > 0 && Object.keys(results[0]).length === 0)
           ) {
             botResponses.push({
               content:
@@ -2209,7 +2274,7 @@ export default {
 
             featureOfInterestList = "";
 
-            options = [];
+            //options = [];
             if (results.length == 1) {
               let obj = this.getPredicateName(results[0][head[0]].value);
               featureOfInterestList += " a/an " + obj.name + "<br>";
@@ -2241,7 +2306,7 @@ export default {
           let loadedOptions = [];
           let nameDict = {}; //make sure if there is a duplicate name to add numberings.
 
-          listItems = "";
+          let listItems = "";
           for (let i = 0; i < data.length; i++) {
             if (observableURI != data[i][data_head[0]].value) {
               let obj = this.getPredicateName(data[i][data_head[0]].value);
@@ -2299,30 +2364,31 @@ export default {
           botResponses.push({ content: "<ul>" + listItems + "</ul>" });
           break;
 
-
+        }
         /*
             - llm_ask_rdf
             - llm_ask_specific
             - llm_ask_general
         */
         case "llm_ask_rdf":
-        case "llm_ask_specific":
+        case "llm_ask_specific": {
           botResponses = this.handleByLlmResponses(
-              userMsg,
-              botResponses,
-              2,
-            );
+            userMsg,
+            botResponses,
+            2,
+          );
           break;
-        case "llm_ask_general":
+        }
+        case "llm_ask_general": {
           botResponses = this.handleByLlmResponses(
-              userMsg,
-              botResponses,
-              3,
-            );
+            userMsg,
+            botResponses,
+            3,
+          );
           break;
-
+        }
         case "construct_where_query":
-        case "construct_when_query":
+        case "construct_when_query": {
           // botResponses.push({content: response});
 
           let iPickedMyOwnDate = false;
@@ -2331,6 +2397,8 @@ export default {
           let foundObservablesNames = [];
           let foundObservables = [];
           let addToExistingSensors = false;
+          let server_response = undefined;
+          let observable = undefined;
 
           exEnt = this.extractEntities({
             entitiesArray: response["custom"]["latest_message"]["entities"],
@@ -2438,8 +2506,8 @@ export default {
                 break;
               }
 
-              head = server_response.data["head"]["vars"];
-              results = server_response.data["results"]["bindings"];
+              let head = server_response.data["head"]["vars"];
+              let results = server_response.data["results"]["bindings"];
 
               if (
                 results.length > 0 &&
@@ -3182,10 +3250,11 @@ export default {
           });
 
           break;
-
-        default:
+        }
+        default: {
           botResponses.push({ content: "I don't know how to process that." });
           botResponses.push({ content: response });
+        }
       }
 
       return botResponses;
@@ -3608,7 +3677,7 @@ export default {
           console.log("cleanupdateInfo -- before outer loop");
 
           for (let x = ducklingTime.length - 1; x >= 0; x--) {
-            let found = false;
+            // let found = false;
             console.log("cleanupdateInfo -- outer loop");
             for (let y = 0; y < DATEkeys.length; y++) {
               //two ways in which (a,b) cannot overlap with (x,y)
@@ -3684,16 +3753,15 @@ export default {
       return extractedEntities;
     },
     botuiMessage: function (payload) {
-      if (payload["action"]) {
-      } else {
+      if (!payload["action"]) {
         botui.message.add(payload);
-        if (payload["content"]) {
-          // let sender = "Bot";
-          // if(payload["human"]){
-          //   sender = "User";
-          // }
-          // axios.post("./api/chatlog", {log: sender+": "+JSON.stringify(payload["content"])});
-        }
+        // if (payload["content"]) {
+        // let sender = "Bot";
+        // if(payload["human"]){
+        //   sender = "User";
+        // }
+        // axios.post("./api/chatlog", {log: sender+": "+JSON.stringify(payload["content"])});
+        // }
       }
     },
     /**
@@ -3751,9 +3819,9 @@ export default {
 
             //log it to the server.
             //axios.post("./api/chatlog", {log: "User: "+JSON.stringify(text)});
-            axios.post("./api/chatlog", {
-              log: "Rasa: " + JSON.stringify(data),
-            });
+            // axios.post("./api/chatlog", {
+            //   log: "Rasa: " + JSON.stringify(data),
+            // });
 
             console.log("Rasa: ", data);
 
